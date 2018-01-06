@@ -1,0 +1,176 @@
+
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="http://nerdamer.com/js/nerdamer.core.js"></script>
+	<title>CoreScript 2.0</title>
+</head>
+<center>
+	<div id="box">
+	<br><br><br><br>
+		<input type="txt" id="code" value="print Hello, World!"><br>
+		<br>
+<input type="submit" onclick="run()" id="btn" value="Run">
+<input type="submit" onclick="settings()" id="btn" value="Settings">
+<input type="submit" onclick="document.getElementById('box1').innerHTML = ''  " id="btn" value="Clear">
+<input type="submit" onclick="downloadfile()" id="btn" value="Compile">
+<input type="submit" onclick="location.reload()" id="btn" value="Reset">
+<br><br>
+<div id="box1">
+	
+</div>
+	</div>
+	<div id="settings">
+		<h1>Settings - <button onclick="closesettings()">Close</button></h1>
+		<br>
+		
+		<br>
+		<p>You have written <span id="codenumber"></span> line(s) of code.</p>
+		<span></span>
+	</div>
+</center>
+<br>
+<script type="text/javascript">
+var codelist = $('#code').val().split('\n');
+var pi = 3.14;
+var version = "CoreScript Basic 0.5 Alpha";
+var time = new Date();
+function downloadfile() {
+	var codetodownload = commands.join("");
+	download("project.html",commands.join(""));
+}
+function settings() {
+	document.getElementById('settings').style.visibility = "visible";
+	document.getElementById('codenumber').innerHTML = commands.length;
+}
+function closesettings() {
+	document.getElementById('settings').style.visibility = "hidden";
+}
+var commands = ["<!-- Generated with CoreScript Studio -->"];
+	function run() {
+    var code = document.getElementById('code').value;
+var print = code.startsWith("print ");
+var alrt = code.startsWith("message ");
+var variable = code.startsWith("set ");
+var input = code.startsWith("input ");
+var comment = code.startsWith("##");
+var printf = code.startsWith("printf ");
+var do1 = code.startsWith("do ");
+var button = code.startsWith("button=");
+var ifelse = code.startsWith("if ");
+
+
+if (print == true) {
+var res = code.substring(6);
+document.getElementById('box1').innerHTML = document.getElementById('box1').innerHTML + res;
+commands.push("<span>"+res+"</span>");
+} 
+else if (alrt == true) {
+	var res1 = code.substring(8);
+alert(res1);
+commands.push('<script>alert("'+res1+'");<'+"/"+'script>');
+}
+else if (comment == true) {
+	var res2 = code.substring(2);
+	console.log("> " + res2);
+	commands.push('<!-- '+res2+' -->');
+
+}
+else if (variable == true) {
+	var res3 = code.substring(4); // set=
+	var res31 = res3.split('=')[0]; // Variable Name
+	var res33 = res3.split('=')[1]; // Variable Value
+	console.log("Set "+res31+ " to "+res33);
+	window[res31] = res33;
+	commands.push('<script>var '+res31+' = "'+res33+'";<'+"/"+'script>');
+
+}
+else if (input == true) {
+	var res4 = code.substring(6);
+	var res41 = res4.split('=')[0]; // Input Name
+	var res43 = res4.split('=')[1]; // Input Value
+	window[res41] = prompt(res43);
+	commands.push('<script>var '+res41+' = prompt("'+res43+'");<'+"/"+'script>');
+
+}
+else if (do1 == true) {
+	var res5 = code.substring(3);
+	var result = nerdamer(res5).evaluate();
+	document.getElementById('box1').innerHTML = document.getElementById('box1').innerHTML + result;
+	commands.push(result);
+
+
+}
+else if (printf == true) {
+var res6 = code.substring(7);
+document.getElementById('box1').innerHTML = document.getElementById('box1').innerHTML + window[res6];
+commands.push("<span id='span'></span><script>document.getElementById('span').textContent="+res6+";<"+'/'+"script>");
+
+
+}
+else if (ifelse == true) {
+	// if name==hello:dosomthing
+var res7 = code.substring(3); //
+var res71 = res7.split('==')[0]; // name
+	var res73 = res7.split(':')[1]; // dosomthing
+	var res74 = res7.split(':')[0]; // name==hello
+	var res75 = res74.split('==')[1]; // hello
+	eval('if ('+res71+' == "'+res75+'") {eval(res73);} else {alert("False");}');
+	commands.push('<script>if ('+res71+' == "'+res75+'") {'+res73+'} else {alert("False");}<'+"/"+'script>  ');
+
+}
+else {
+	document.getElementById('box1').innerHTML = document.getElementById('box1').innerHTML + "Syntax Error" + "<br>";
+}
+}
+
+function download(filename, text) {
+  var element = document.createElement('a');
+  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+  element.setAttribute('download', filename);
+
+  element.style.display = 'none';
+  document.body.appendChild(element);
+
+  element.click();
+
+  document.body.removeChild(element);
+}
+</script>
+<style>
+body {
+	background-color: lightgrey;
+}
+#settings {
+	border: 1px solid black;
+	width: 500px;
+	height: 99.7%;
+	float: right;
+	visibility: hidden;
+	background-color: gold;
+
+}
+#box {
+	border: 1px solid black;
+	width: 500px;
+	height: 98%;
+	position: absolute;
+	background-color: gold;
+}
+#code {
+	width: 80%;
+	height: 30px;
+	border: 1px solid black;
+	resize: none;
+	font-size: 20px;
+
+}
+#btn {
+	height: 20px;
+	width: 80px;
+	border: 1px solid black;
+	border-radius: 5px;
+	background-color: lightgrey;
+}
+</style>
+</html>

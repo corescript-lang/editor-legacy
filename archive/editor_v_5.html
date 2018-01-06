@@ -1,0 +1,483 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<!--[if lt IE 9]>
+    <script src="/js/html5shiv.js"></script>
+  <![endif]-->
+  <!--[if lt IE 8]>
+    <script src="/js/html5shiv.js"></script>
+  <![endif]-->
+<link rel="icon" href="https://corescript.neocities.org/favicon.png">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<title>CoreScript 6.0 Beta</title>
+</head>
+<body>
+<button id="runbutton" class="runbutton" onclick="runcode()">
+Run
+</button>
+<button id="runbutton" class="runbutton2" onclick="save()">
+Save
+</button>
+<button id="runbutton" class="runbutton3" onclick="document.getElementById('fileInput').click()">
+Open
+</button>
+<button id="runbutton" class="runbutton4" onclick="share()">
+Share
+</button>
+
+<br><br>
+<div id="lines">
+<div style="line-height:14%;">
+    <br>
+</div>
+	<div id="codelines">
+	
+	</div>
+</div>
+<textarea onkeydown="" id="code">
+</textarea>
+<div id="outputbox">
+<p id="output"></p>
+</div>
+</body>
+<script>
+var q_ = q+1;
+// Declare Variables
+var codel = document.querySelector('#code');
+var codelinesl = document.querySelector('#codelines');
+var gotolimit = 0;
+var draw = false;
+var boxnum = 1;
+var q = 0;
+var t;
+var i;
+var o;
+var p;
+var e;
+var printa = [];
+var current;
+var variablecolumn = 1;
+var printpend;
+var currentvar = "";
+var linedoing=true;
+	function runcode() {
+		gotolimit = 0;
+		var valueof = document.getElementById('code').value;
+		var codelist = $(code).val().split('\n');
+		document.getElementById('output').innerHTML = "";
+// Clear the textarea before adding a result.
+for (i = 0; i < codelist.length; i++) {
+current = codelist[i];
+var current2 = current;
+var print = current.startsWith('print ');
+var note = current.startsWith("//");
+var set = current.startsWith("var ");
+var printf = current.startsWith("printf ");
+var input = current.startsWith("input ");
+var draw = current.startsWith("draw");
+var pen = current.startsWith("pen ");
+var cls = current.startsWith("cls");
+var msg = current.startsWith("msg ");
+var setit = current.startsWith("set ");
+var wait = current.startsWith("wait ");
+var ifelse = current.startsWith("if ");
+var gotoo = current.startsWith("goto ");
+var play = current.startsWith('play ');
+var ifnot = current.startsWith('not ');
+var stop = current.startsWith('stop');
+if (print) {
+var s1 = current.substring(6);
+var s1n = s1.replace(/{br}/g,"<br>");
+var s1split = s1n.split("");
+// Look for ( variable then stop at )
+for (p = 0; p < s1split.length ; p++) {
+if (s1split[p] == "(") {
+var variable1 = s1n.match(/\(([^)]+)\)/)[1];
+s1n = s1n.replace("("+variable1+")",eval(variable1));
+
+} else {
+
+}
+}
+document.getElementById('output').innerHTML = document.getElementById('output').innerHTML + "<span>"+s1n+"</span><br>";
+} else if (note) {
+	current = codelist[i];
+var s2 = current.substring(2);
+console.log(s2);
+} else if (set) {
+	// set name=Hello
+	current = codelist[i];
+	//name=hello
+var s3 = current.substring(4);
+// hello
+var val = s3.split('=')[1]; // Input Value
+var nam = s3.split('=')[0]; // Input Name
+console.log("Set "+nam+" to "+val);
+window[nam] = val;
+
+} else if (printf) {
+var s4 = current.substring(7);
+document.getElementById('output').innerHTML = document.getElementById('output').innerHTML + "<span>"+eval(s4)+"</span>";
+} else if (input) {
+	// input name=Hello
+	current = codelist[i];
+	//name=hello
+var s5 = current.substring(6);
+// hello
+var ival = s5.split('=')[1]; // Input Value
+var inam = s5.split('=')[0]; // Input Name
+
+
+window[inam] = prompt(ival);
+
+} else if (draw) {
+	document.getElementById('output').innerHTML = "";
+	o = 0;
+	boxnum = 1;
+	draw = false;
+	current = codelist[i];
+	draw = true; 
+    for (o = 0; o < 200; o++) {
+	var box = "<span id='"+boxnum+"'> <img style='height:20px;' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAIAAAACUFjqAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAOSURBVChTYxgFJAMGBgABNgABY8OiGAAAAABJRU5ErkJggg=='></span>";
+	boxnum = boxnum + 1;
+	document.getElementById('output').innerHTML = document.getElementById('output').innerHTML + box;
+}
+
+	
+} else if (pen) {
+	current = codelist[i];
+	var s6 = current.substring(4);
+	document.getElementById(eval("s6")).innerHTML = '<img  style="height:20px;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAIAAAACUFjqAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYSURBVChTY/z//z8DbsAEpXGAkSnNwAAApeMDEUEua14AAAAASUVORK5CYII=">';
+
+
+	
+} else if (cls) {
+	document.getElementById("output").innerHTML = "";
+} else if (msg) {
+
+
+
+var s7 = current.substring(4);
+var s7split = s7.split("");
+// Look for ( variable then stop at )
+
+for (t = 1; t < s7split.length ; t++) {
+if (s7split[t] == "(") {
+var variable12 = s7.match(/\(([^)]+)\)/)[1];
+s7 = s7.replace("("+variable12+")",eval(variable12));
+
+
+
+
+} else {
+
+}
+}
+alert(s7);
+} else if (setit) {
+	// set score=score + 1
+	current = codelist[i];
+	//name=hello
+var s8 = current.substring(4);
+// hello
+var val8 = s8.split('=')[1]; // Input Value
+var nam8 = s8.split('=')[0]; // Input Name
+console.log("Set "+nam8+" to "+val8);
+}
+
+ else if (ifelse) {
+ 	var ifend = true;
+ 	var ended = true;
+	//if name=johndoe 1
+//name=johndoe 1
+var s91 = current.split('=')[1]; //johndoe 1
+var s92 = current.split('=')[0]; //if name
+var s94 = s92.split(' ')[1]; //name
+var s93 = s91.split(' ')[0]; //johndoe
+var s95 = s91.split(' ')[1]; //johndoe
+eval("if ("+s94+" == '"+s93+"') {ifend=true;} else {ifend=false;}");
+if (ifend) {
+	var ie2 = +s95 - 2;
+	i = ie2;
+} else {
+	
+}
+
+
+} else if (current == "") {
+
+} else if (gotoo) {
+	gotolimit++;
+var s101 = current.substring(5);
+if (gotolimit > 1000) {
+	alert("Goto limit of 1000 reached");
+} else {
+	var ie = +s101 - 2;
+	i = ie;
+}
+} else if (play) {
+	current = codelist[i];
+var s11 = current.substring(5);
+var string = isNaN(s11);
+if (string) {
+	var audio = new Audio(s11);
+audio.play();
+} else {
+
+}
+} else if (ifnot) {
+ 	var _ifend = true;
+ 	var _ended = true;
+	//if name=johndoe 1
+//name=johndoe 1
+var s121 = current.split('=')[1]; //johndoe 1
+var s122 = current.split('=')[0]; //if name
+var s124 = s122.split(' ')[1]; //name
+var s123 = s121.split(' ')[0]; //johndoe
+var s125 = s121.split(' ')[1]; //johndoe
+eval("if ("+s124+" == '"+s123+"') {_ifend=true;} else {_ifend=false;}");
+if (ifend) {
+	
+} else {
+	var ie4 = +s125 - 2;
+	i = ie4;
+}
+} else if (stop) {
+console.log("Program Stopped");
+return;
+
+
+
+} else {
+	var errorline = i+1;
+	var audio = new Audio("http://pufflegamerz.x10.mx/files/winxp.mp3");
+audio.play();
+	alert("Syntax error on line "+errorline+".");
+}
+}
+}
+function save() {
+	codelist = $('#code').val().split('\n\n');
+	var saveq = confirm("Are you sure you want to save?");
+	if (saveq) {
+		var projectname = prompt("Are you sure you want to save?","myproject");
+		download(projectname+".corescript",codelist);
+	} else {
+
+	}
+
+}
+// File opener
+
+// File Downloader
+function download(filename, text) {
+  var element = document.createElement('a');
+  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+  element.setAttribute('download', filename);
+
+  element.style.display = 'none';
+  document.body.appendChild(element);
+
+  element.click();
+
+  document.body.removeChild(element);
+}
+
+function checkforfile() {
+	var wll = window.location.href;
+	var wll1 = wll.includes("#");
+	if (wll1) {
+	var pasth = wll.split('#')[1]; 
+	document.getElementById('code').innerHTML = "";
+	document.getElementById('code').innerHTML = "";
+	var pasth1 = pasth.replace(/@break@/g,"\n");
+	document.getElementById('code').innerHTML = pasth1;
+
+} else {
+
+	}
+}
+document.getElementById('code').innerHTML = "print Hello, World!";
+checkforfile();
+
+/* 
+Demo Testing Programs:
+draw
+pen 1
+pen 31
+pen 61
+pen 91
+pen 121
+pen 62
+pen 63
+pen 64
+pen 34
+pen 4
+pen 94
+pen 124
+*/
+$(function(){
+setInterval(update, 100);
+});
+
+function update() {
+document.getElementById('codelines').innerHTML = "";
+	var codelist1 = $(code).val().split('\n');
+	
+	for (q = 0; q < codelist1.length; q++) {
+		var q_ = q+1;
+		document.getElementById('codelines').innerHTML = document.getElementById('codelines').innerHTML + "<span>"+ q_ +"</span><br>";
+
+	}
+}
+$(function(){
+setInterval(update2, 1);
+});
+
+function update2() {
+document.querySelector('#lines').scrollTop = document.querySelector('#code').scrollTop;
+}
+	
+	
+
+$("document").ready(function(){
+    
+    $("#fileInput").change(function() {
+                
+var file = document.getElementById("fileInput").files[0];
+if (file) {
+    var reader = new FileReader();
+    reader.readAsText(file, "UTF-8");
+    reader.onload = function (evt) {
+    	document.getElementById('code').innerHTML = "ololol";
+        document.getElementById("code").value = evt.target.result;
+    }
+    reader.onerror = function (evt) {
+        document.getElementById("code").innerHTML = "// Thats not a CoreScript file, silly.";
+    }
+}
+
+
+            });
+    });
+function share() {
+	var compiledshare = document.getElementById('code').value;
+	var compiledshare1 = compiledshare.replace(/\n/g,"@break@");
+	prompt("Share this link with your friends!","https://corescript.neocities.org/editor/#"+compiledshare1);
+}
+var mystery = "You found the mystery variable!";
+function popup(text) {
+	document.getElementById('popup').style.visibility = "visible";
+	document.getElementById('popuptext').innerHTML = text;
+}
+</script>
+<style type="text/css">
+#code {
+	width: 49%;
+	resize: none;
+	height: 600px;
+	border: 1px solid black;
+	font-size: 20px;
+	font-family: times new roman;
+	outline: none;
+	overflow-x: scroll;
+	
+}
+#outputbox {
+	float: right;
+	width: 48%;
+	height: 604px;
+	border: 1px solid black;
+	background-color: white;
+	word-wrap:break-word;
+
+}
+body{
+	background-color: yellow;
+}
+.runbutton {
+	width: 100px;
+	height: 30px;
+	position: absolute;
+	background-color: lightgreen;
+	border: 2px solid black;
+	border-radius: 5px;
+
+
+}
+.runbutton:hover {
+background-color: green;
+}
+.runbutton2 {
+	width: 100px;
+	height: 30px;
+	position: absolute;
+	left: 120px;
+	background-color: lightgreen;
+	border: 2px solid black;
+	border-radius: 5px;
+
+
+}
+.runbutton2:hover {
+background-color: green;
+}
+.runbutton3 {
+	width: 100px;
+	height: 30px;
+	position: absolute;
+	left: 235px;
+	background-color: lightgreen;
+	border: 2px solid black;
+	border-radius: 5px;
+
+
+}
+.runbutton3:hover {
+background-color: green;
+}
+.runbutton4 {
+	width: 100px;
+	height: 30px;
+	position: absolute;
+	left: 345px;
+	background-color: lightgreen;
+	border: 2px solid black;
+	border-radius: 5px;
+
+
+}
+.runbutton4:hover {
+background-color: green;
+}
+#popup {
+	top: 30%;
+	left: 36%;
+	position: absolute;
+	width: 400px;
+	height: 200px;
+	border: 1px solid black;
+	background-color: white;
+	visibility:hidden;
+}
+#lines {
+	float: left;
+	width: 30px;
+	border: 1px solid black;
+	height: 604px;
+	background-color: white;
+	font-size: 20px;
+	overflow: hidden;
+}
+</style>
+</html>
+<!-- Hidden Crap -->
+<div id="popup">
+	<button style="float:right;" onclick='document.getElementById("popup").style.visibility = "hidden";'>X</button>
+	<br>
+	<center>
+		<p id="popuptext"></p>
+	</center>
+</div>
+<input id="fileInput" multiple="false" accept=".corescript" type="file" style="display:none;" />

@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<title>CoreScript 5.0 </title>
+</head>
+<body>
+<button id="runbutton" class="runbutton" onclick="runcode()">
+Run
+</button>
+<button id="runbutton" class="runbutton2" onclick="save()">
+Save
+</button>
+<button id="runbutton" class="runbutton3" onclick="document.getElementById('fileInput').click()">
+Open
+</button>
+<button id="runbutton" class="runbutton4" onclick="share()">
+Share
+</button>
+
+<br><br>
+<textarea id="code">
+</textarea>
+<div id="outputbox">
+<p id="output"></p>
+</div>
+</body>
+<script>
+// Declare Variables
+var draw = false;
+var boxnum = 1;
+var t;
+var i;
+var o;
+var p;
+var e;
+var printa = [];
+var current;
+var variablecolumn = 1;
+var printpend;
+var currentvar = "";
+	function runcode() {
+		var valueof = document.getElementById('code').value;
+		var codelist = $(code).val().split('\n');
+		document.getElementById('output').innerHTML = "";
+// Clear the textarea before adding a result.
+for (i = 0; i < codelist.length; i++) {
+current = codelist[i];
+var current2 = current;
+var print = current.startsWith('print ');
+var note = current.startsWith("//");
+var set = current.startsWith("var ");
+var printf = current.startsWith("printf ");
+var input = current.startsWith("input ");
+var draw = current.startsWith("draw");
+var pen = current.startsWith("pen ");
+var cls = current.startsWith("cls");
+var msg = current.startsWith("msg ");
+var setit = current.startsWith("set ");
+var wait = current.startsWith("wait ");
+var ifelse = current.startsWith("if ");
+var gotoo = current.startsWith("goto ");
+if (print) {
+var s1 = current.substring(6);
+var s1n = s1.replace(/{br}/g,"<br>");
+var s1split = s1n.split("");
+// Look for ( variable then stop at )
+for (p = 0; p < s1split.length ; p++) {
+if (s1split[p] == "(") {
+var variable1 = s1n.match(/\(([^)]+)\)/)[1];
+s1n = s1n.replace("("+variable1+")",eval(variable1));
+
+} else {
+
+}
+}
+document.getElementById('output').innerHTML = document.getElementById('output').innerHTML + "<span>"+s1n+"</span>";
+} else if (note) {
+	current = codelist[i];
+var s2 = current.substring(2);
+console.log(s2);
+} else if (set) {
+	// set name=Hello
+	current = codelist[i];
+	//name=hello
+var s3 = current.substring(4);
+// hello
+var val = s3.split('=')[1]; // Input Value
+var nam = s3.split('=')[0]; // Input Name
+console.log("Set "+nam+" to "+val);
+window[nam] = val;
+
+} else if (printf) {
+var s4 = current.substring(7);
+document.getElementById('output').innerHTML = document.getElementById('output').innerHTML + "<span>"+eval(s4)+"</span>";
+} else if (input) {
+	// input name=Hello
+	current = codelist[i];
+	//name=hello
+var s5 = current.substring(6);
+// hello
+var ival = s5.split('=')[1]; // Input Value
+var inam = s5.split('=')[0]; // Input Name
+
+
+window[inam] = prompt(ival);
+
+} else if (draw) {
+	document.getElementById('output').innerHTML = "";
+	o = 0;
+	boxnum = 1;
+	draw = false;
+	current = codelist[i];
+	draw = true; 
+    for (o = 0; o < 200; o++) {
+	var box = "<span id='"+boxnum+"'> <img style='height:20px;' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAIAAAACUFjqAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAOSURBVChTYxgFJAMGBgABNgABY8OiGAAAAABJRU5ErkJggg=='></span>";
+	boxnum = boxnum + 1;
+	document.getElementById('output').innerHTML = document.getElementById('output').innerHTML + box;
+}
+
+	
+} else if (pen) {
+	current = codelist[i];
+	var s6 = current.substring(4);
+	document.getElementById(eval("s6")).innerHTML = '<img  style="height:20px;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAIAAAACUFjqAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYSURBVChTY/z//z8DbsAEpXGAkSnNwAAApeMDEUEua14AAAAASUVORK5CYII=">';
+
+
+	
+} else if (cls) {
+	document.getElementById("output").innerHTML = "";
+} else if (msg) {
+
+
+
+var s7 = current.substring(4);
+var s7split = s7.split("");
+// Look for ( variable then stop at )
+
+for (t = 1; t < s7split.length ; t++) {
+if (s7split[t] == "(") {
+var variable12 = s7.match(/\(([^)]+)\)/)[1];
+s7 = s7.replace("("+variable12+")",eval(variable12));
+
+
+
+
+} else {
+
+}
+}
+alert(s7);
+} else if (setit) {
+	// set score=score + 1
+	current = codelist[i];
+	//name=hello
+var s8 = current.substring(4);
+// hello
+var val8 = s8.split('=')[1]; // Input Value
+var nam8 = s8.split('=')[0]; // Input Name
+console.log("Set "+nam8+" to "+val8);
+}
+
+ else if (ifelse) {
+ 	var ifend = true;
+ 	var ended = true;
+	//if name=johndoe {
+//name=johndoe {
+var s91 = current.split('=')[1]; //johndoe {
+var s92 = current.split('=')[0]; //if name
+var s94 = s92.split(' ')[1]; //name
+var s93 = s91.split(' ')[0]; //johndoe
+eval("if ("+s94+" == '"+s93+"') {ifend=true;} else {ifend=false;}");
+alert(i);
+if (ifend) {
+	while (ended = true) {
+		if (current == "}") {
+
+			ended = false;
+		} else {
+
+			i = i+1;
+			alert(codelist[i]);
+		}
+	}
+} else {
+	alert("no");
+}
+
+
+} else if (current == "") {
+
+} else {
+	var errorline = i+1;
+	alert("Syntax error on line "+errorline+".");
+}
+
+
+
+
+
+
+
+
+}
+}
+function save() {
+	codelist = $('#code').val().split('\n\n');
+	var saveq = confirm("Are you sure you want to save?");
+	if (saveq) {
+		var projectname = prompt("Are you sure you want to save?","myproject");
+		download(projectname+".corescript",codelist);
+	} else {
+
+	}
+
+}
+// File opener
+
+// File Downloader
+function download(filename, text) {
+  var element = document.createElement('a');
+  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+  element.setAttribute('download', filename);
+
+  element.style.display = 'none';
+  document.body.appendChild(element);
+
+  element.click();
+
+  document.body.removeChild(element);
+}
+
+
+function checkforfile() {
+	var wll = window.location.href;
+	var wll1 = wll.includes("#");
+	if (wll1) {
+	var pasth = wll.split('#')[1]; 
+	document.getElementById('code').innerHTML = "";
+	document.getElementById('code').innerHTML = "";
+	var pasth1 = pasth.replace(/@break@/g,"\n");
+	document.getElementById('code').innerHTML = pasth1;
+
+} else {
+
+	}
+}
+document.getElementById('code').innerHTML = "print Hello, World!";
+checkforfile();
+
+/* 
+Demo Testing Programs:
+draw
+pen 1
+pen 31
+pen 61
+pen 91
+pen 121
+pen 62
+pen 63
+pen 64
+pen 34
+pen 4
+pen 94
+pen 124
+*/
+$("document").ready(function(){
+    
+    $("#fileInput").change(function() {
+                
+var file = document.getElementById("fileInput").files[0];
+if (file) {
+    var reader = new FileReader();
+    reader.readAsText(file, "UTF-8");
+    reader.onload = function (evt) {
+    	document.getElementById('code').innerHTML = "print Hello, World!";
+        document.getElementById("code").innerHTML = evt.target.result;
+    }
+    reader.onerror = function (evt) {
+        document.getElementById("code").innerHTML = "// Thats not a CoreScript file, silly.";
+    }
+}
+
+
+            });
+    });
+function share() {
+	var compiledshare = document.getElementById('code').value;
+	var compiledshare1 = compiledshare.replace(/\n/g,"@break@");
+	prompt("Share this link with your friends!","https://corescript.neocities.org/editor/editor_v_4.html#"+compiledshare1);
+}
+</script>
+<style type="text/css">
+#code {
+	width: 50%;
+	resize: none;
+	height: 600px;
+	border: 1px solid black;
+	font-size: 20px;
+	font-family: times new roman;
+	outline: none;
+	
+}
+#outputbox {
+	float: right;
+	width: 49%;
+	height: 604px;
+	border: 1px solid black;
+	background-color: white;
+	word-wrap:break-word;
+
+}
+body{
+	background-color: yellow;
+}
+.runbutton {
+	width: 100px;
+	height: 30px;
+	position: absolute;
+	background-color: lightgreen;
+	border: 2px solid black;
+	border-radius: 5px;
+
+
+}
+.runbutton:hover {
+background-color: green;
+}
+.runbutton2 {
+	width: 100px;
+	height: 30px;
+	position: absolute;
+	left: 120px;
+	background-color: lightgreen;
+	border: 2px solid black;
+	border-radius: 5px;
+
+
+}
+.runbutton2:hover {
+background-color: green;
+}
+.runbutton3 {
+	width: 100px;
+	height: 30px;
+	position: absolute;
+	left: 235px;
+	background-color: lightgreen;
+	border: 2px solid black;
+	border-radius: 5px;
+
+
+}
+.runbutton3:hover {
+background-color: green;
+}
+.runbutton4 {
+	width: 100px;
+	height: 30px;
+	position: absolute;
+	left: 345px;
+	background-color: lightgreen;
+	border: 2px solid black;
+	border-radius: 5px;
+
+
+}
+.runbutton4:hover {
+background-color: green;
+}
+</style>
+</html>
+<!-- Open Dialog -->
+<input id="fileInput" multiple="false" accept=".corescript" type="file" style="display:none;" />

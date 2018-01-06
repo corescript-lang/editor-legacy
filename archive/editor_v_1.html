@@ -1,0 +1,234 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>CoreScript 1.0</title>
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	
+</head>
+<body>
+<button onclick="save()">Save</button>
+<button>Options</button>
+<button onclick="tutorial()">Tutorial</button>
+<textarea id="code"></textarea>
+<button id="btn" onclick="run()">Run</button>
+<div id="output">
+	
+</div>
+</body>
+
+<style>
+	#code {
+		width: 99.4%;
+		height: 470px;
+		resize: none;
+		background-color: white;
+		outline: none;
+		border: 1px solid black;
+		color: black;
+	}
+	
+	#output {
+		width: 90%;
+		height: 140px;
+		float: right;
+		border: 1px solid black;
+		background-color: white;
+	}
+	#btn {
+		width: 9%;
+		height: 140px;
+		border: 1px solid black;
+		background-color: lightgreen;
+	}
+	#btn:hover {
+   background-color: green;
+	}
+	body {
+		background-color: grey;
+	}
+	#drawing {
+		width: 1px;
+		height: 1px;
+		border: 1px solid black;
+		background-color: black;
+		position: absolute;
+	}
+</style>
+<script>
+
+var currentdate = new Date().toLocaleDateString();
+var cversion = 0.1;
+var pi = Math.PI;
+	function print(print1) {
+  document.getElementById('output').innerHTML =  document.getElementById('output').innerHTML + print1;
+}
+	function bold(print11) {
+  document.getElementById('output').innerHTML =  document.getElementById('output').innerHTML + "<b>"+print11+"</b>";
+}
+function underline(print12) {
+  document.getElementById('output').innerHTML =  document.getElementById('output').innerHTML + "<u>"+print12+"</u>";
+}
+function italic(print13) {
+  document.getElementById('output').innerHTML =  document.getElementById('output').innerHTML + "<i>"+print13+"</i>";
+}
+function br() {
+	document.getElementById('output').innerHTML =  document.getElementById('output').innerHTML + "<br>";
+}
+function color(print14,col) {
+	document.getElementById('output').innerHTML =  document.getElementById('output').innerHTML + "<span style=color:"+col+";>"+print14+"<span>";
+}
+function consolewrite(consolewrite1) {
+  console.log(consolewrite1);
+}
+function ask(question1,correct1) {
+var question1 = prompt(question1);
+if(question1 == correct1) {
+alert("Correct.");
+} else {
+alert("Incorrect.");
+}
+}
+function variable(varname,varvalue) {
+	window[varname] = varvalue; // variable("1","2");
+}
+function style(textcolor,bgcolor) {
+document.getElementById('output').style.color = textcolor;
+document.getElementById('output').style.backgroundColor = bgcolor;
+}
+function currentversion() {
+	print("Corescript Version " + cversion);
+}
+function redirect(urlto) {
+window.open(urlto);
+}
+function popup(popuptext) {
+alert(popuptext);
+}
+function input(inputname,inputext) {
+window[inputname] = prompt(inputext);
+
+}
+function ifelse(iff,equaldis,dodis,elseh) {
+	if (iff == equaldis) {
+		eval(dodis);
+	} else {
+		eval(elseh);
+	}
+}
+function keypress(keycode,codetocom) {
+document.body.onkeyup = function(e){
+    if(e.keyCode == keycode){
+        eval(codetocom);
+    }
+}
+}
+function num(numberto) {
+	return Number(numberto);
+}
+var showText = function (target, message, index, interval) {    
+  if (index < message.length) { 
+    $(target).append(message[index++]); 
+    setTimeout(function () { showText(target, message, index, interval); }, interval); 
+  } 
+}
+function tutorial() {
+  
+	showText(code,'## Welcome to CoreScript!', 0, 100); 
+	setTimeout(
+  function() 
+  {
+	showText(code,'\n## This tutorial will give you a basic understanding of this programming language.', 0, 100); 
+  }, 5000);
+	setTimeout(
+  function() 
+  {
+	showText(code,'\n## This is a simple hello world project.', 0, 100); 
+  }, 15000);
+	setTimeout(
+  function() 
+  {
+	showText(code,'\nprint("Hello World");', 0, 100); 
+  }, 20000);
+	setTimeout(
+  function() 
+  {
+	showText(code,'\n## Click the run button to see it in action!', 0, 100); 
+  }, 23000);
+
+	setTimeout(
+  function() 
+  {
+	showText(code,'\n## Now we will learn about variables.', 0, 100); 
+  }, 28000);
+	
+	setTimeout(
+  function() 
+  {
+	showText(code,'\n## A variable is a number or letter that stores info. Here is a simple variable.', 0, 100); 
+  }, 32000);
+	
+	setTimeout(
+  function() 
+  {
+	showText(code,'\nvariable("score","25");', 0, 100); 
+  }, 43000);
+	setTimeout(
+  function() 
+  {
+	showText(code,'\n## Now we will print the variable.', 0, 100); 
+  }, 47000);
+	setTimeout(
+  function() 
+  {
+	showText(code,'\nprint(score);', 0, 100); 
+  }, 52000);
+	setTimeout(
+  function() 
+  {
+	showText(code,'\n## Thats it for the tutorial! For more info, go to corescript.neocities.org/docs.html', 0, 100); 
+  }, 58000);
+	
+}
+function run() {
+		var code = document.getElementById('code').value;
+        var code1 = code.replace(/##/g, "//"); 
+        document.getElementById('output').innerHTML = "";
+
+if (code1.indexOf("document.write")!=-1)
+{
+  alert("Don't use document.write! Use print()!"); 
+} else {
+
+	eval(code1); 
+}
+		}
+		function save() {
+			var filename1 = prompt("Pick a name for this project.");
+var code = document.getElementById('code').value;
+        var code1 = code.replace("##", "//"); 
+		document.getElementById('output').innerHTML = "";
+
+
+		}
+		
+		
+
+		// File saver
+		function download(filename, text) {
+    var pom = document.createElement('a');
+    pom.setAttribute('href', 'data:text/html,' + encodeURIComponent(text));
+    pom.setAttribute('download', filename);
+
+    if (document.createEvent) {
+        var event = document.createEvent('MouseEvents');
+        event.initEvent('click', true, true);
+        pom.dispatchEvent(event);
+    }
+    else {
+        pom.click();
+    }
+}
+</script>
+</html>

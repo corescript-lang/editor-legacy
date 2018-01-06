@@ -9,7 +9,7 @@
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js">
 	</script>
 
-	<title>CoreScript 1.0.0</title>
+	<title>CoreScript 1.0</title>
 </head>
 <body>
 	<div id="menu">
@@ -37,11 +37,11 @@
 	<form>
 		<input accept=".corescript" id="fileInput" multiple="false" style="display:none;" type="file"> 
 		<script>
-		// Declare Variables
-		var lastcode = [];
 		var batch = ["@echo off", "title Corescript File"]
-		var builder = false; 
-		var builder_compiled = ["<!-- Corescript Advanced Styles Plugin -->", "<title>Corescript Styles<\/title>"];
+		var builder = false; // Corescript's New Website Builder
+		var builder_compiled = ["<!-- Created Using Corescript's Website Builder -->", "<title>Corescript Website<\/title>"];
+		popup("<h3>What's new? Version 1.0.0<\/h3><ul><li>Lots of bug fixes :)<\/li> <li>Corescript is out of BETA!!!!! WOOOHOOOOO!<\/li><\/ul>");
+		// Declare Variables
 		var frombutton = false;
 		var q_ = q + 1;
 		var aaaa = "// nothing";
@@ -63,13 +63,11 @@
 		var printpend;
 		var currentvar = "";
 		var linedoing = true;
-		var codelist = "";
 		var thei = 0;
-		// Update Popup
-	popup("<h3>What's new? Version 1.0.0<\/h3><ul><li>Lots of bug fixes :)<\/li> <li>Corescript is out of BETA!!!!! WOOOHOOOOO!<\/li><\/ul>");
+		// Functions
 		function runcode() {
 			//alert(thei + "  " + i + "  " + frombutton); // Info 4 meee
-		if (frombutton) {
+if (frombutton) {
 // from a button, don't set line to 0
 } else {
 // Not from a button, set line to 0
@@ -77,12 +75,13 @@
 document.getElementById('output').innerHTML = "";
 }
 
-		builder_compiled = ["<!-- Created Using Corescript's Website Builder -->", "<title>Corescript Website<\/title>"];
-		eval(aaaa);
-		gotolimit = 0;
-		var valueof = document.getElementById('code').value;
-		codelist = $(code).val().split('\n');
-		for (i = thei; i < codelist.length; i++) {
+		  builder_compiled = ["<!-- Created Using Corescript's Website Builder -->", "<title>Corescript Website<\/title>"];
+		  eval(aaaa);
+		  gotolimit = 0;
+		  var valueof = document.getElementById('code').value;
+		  var codelist = $(code).val().split('\n');
+		 
+		  for (i = thei; i < codelist.length; i++) {
 		      current = codelist[i];
 		      var current2 = current;
 		      // Every Command
@@ -300,17 +299,17 @@ document.getElementById('output').innerHTML = "";
 		          var s13 = current.substring(5);
 		          sleep(+s13 * 1000);
 
-		      } else if (current == "styles=on") {
-		         builder = true;
-
 		      } else {
 		          var errorline = i + 1;
 		          alert("Syntax error on line " + errorline + ".");
 		          
 		      }
-		      // After commands:
-		      lastcode = codelist;
-		  }}
+		      frombutton = false;
+		          
+		  }
+		  
+		 
+		}
 
 		function save() {
 		  popup("<button onclick='save_corescript()'>Save as Corescript File<\/button><br>");
@@ -345,8 +344,6 @@ document.getElementById('output').innerHTML = "";
 		      document.getElementById('code').innerHTML = "";
 		      var pasth1 = pasth.replace(/@break@/g, "\n");
 		      document.getElementById('code').innerHTML = pasth1;
-		      document.getElementById("outputbox").style.width = "100%";
-		      runcode();
 		  } else {}
 		}
 
@@ -408,7 +405,7 @@ return substringed
 		}
 
 		function settings() {
-		  popup("<center><br> <fieldset> <legend>Advanced Styles (Beta)<\/legend> <span>Enable <span title='( ͡° ͜ʖ ͡°)'>Corescript's<\/span> Advanced Styles Plugin: <\/span><input style='width: 30px;' type='checkbox' onclick='checkw()' id='website-c'> <br> <button onclick='preview_web()'>Preview Styles only<\/button> <\/fieldset> <\/center>");
+		  popup("<center><br> <fieldset> <legend>Website Coder (Beta)<\/legend> <span>Enable <span title='( ͡° ͜ʖ ͡°)'>Corescript's<\/span> Built in Website Coder Plugin: <\/span><input style='width: 30px;' type='checkbox' onclick='checkw()' id='website-c'> <br> <button onclick='preview_web()'>Preview Website<\/button> <\/fieldset> <\/center>");
 		  document.getElementById("website-c").checked = builder;
 		}
 		/*
@@ -609,10 +606,6 @@ body {
 	/* Non-prefixed version, currently
                                   supported by Chrome and Opera */
 	cursor: pointer;
-
-}
-.noselect:hover {
-	background-color: white;
 }
 .runbutton5 {
 	width: 120px;
