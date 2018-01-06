@@ -132,9 +132,12 @@ function replaceVars(string) {
 	}
 	return result
 }
+var name = "";
 setInterval(function() {
 	var text = document.getElementById('code').value;
-	var regex3 = /print ([^]+)/g;
+	var regex4 = /var ([^\n=]+)([//=]+)([^\n=]+)/g;
+	text = text.replace(regex4,"var <span style='color:gold;'>$1</span><span style='color:indego;'>$2</span><span style='color:gold;'>$3</span>");
+	var regex3 = /print ([^\n]+)/g;
 	text = text.replace(regex3,"<span style='color:gold;'>print $1</span>");
 	text = text.replace(/print/g,"<span style='color:orange;'>print</span>");
 	text = text.replace(/var/g,"<span style='color:rgb(0,128,155);'>var</span>");
