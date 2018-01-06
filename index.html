@@ -2,7 +2,9 @@
 <html>
 <head>
 	<title>CoreScript</title>
-	<script src="javascript.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+	<script src="javascript.js"></script>  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -21,9 +23,9 @@ print Hello!
 		<div id="go" onclick="exec()"></div>
 		<div id="download" onclick="download()"></div>
 		<div id="settings"  onclick="document.getElementById('settingsPopup').style.display = 'block';"></div>
-		<div id="player">
-			
-		</div>
+	</div>
+	<div id="player">
+		
 	</div>
 </div>
 <div id="settingsPopup">
@@ -32,6 +34,11 @@ print Hello!
 			<span>X</span>
 		</center>
 	</div>
+	<h1>Settings</h1>
+</div>
+<div class="alert alert-success alert-dismissable" id="alert">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  <strong>Welcome!</strong> The brand new Corescript has been released! Enjoy!
 </div>
 </body>
 </html>
