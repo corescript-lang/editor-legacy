@@ -2,7 +2,7 @@
 The source code behind the brand new CoreScript. 
 
 ---
-### Features
+### New Features
 - Syntax Highlighter
 - Improved variables
 - Better GUI
