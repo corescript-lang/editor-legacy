@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>CoreScript</title>
+	<script src="javascript.js"></script>
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<br>
+<div id="counter">
+
+</div>
+<div id="overlay">
+	
+</div>
+<textarea id="code" spellcheck="false">
+print Hello!
+</textarea>
+<div id="result">
+	<div id="bar">
+		<div id="go" onclick="exec()"></div>
+		<div id="download" onclick="download()"></div>
+		<div id="settings"  onclick="document.getElementById('settingsPopup').style.display = 'block';"></div>
+		<div id="player">
+			
+		</div>
+	</div>
+</div>
+<div id="settingsPopup">
+	<div id="close" onclick="document.getElementById('settingsPopup').style.display = 'none';">
+		<center>
+			<span>X</span>
+		</center>
+	</div>
+</div>
+</body>
+</html>
