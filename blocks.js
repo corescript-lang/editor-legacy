@@ -1,1 +1,1 @@
-newfunction("msg", function(){alert(params.join(" "));});
+newfunction("msg", function(){document.getElementById("player").textContent=params.join(" ");});
