@@ -1,5 +1,6 @@
 var variables = [];
 var labels = [];
+var commands = [];
 function exec() {
 	document.getElementById('player').innerHTML = "";
 	variables = ["line="+i+""];
@@ -103,7 +104,21 @@ function exec() {
 		} else if (code[i] == "stop") {
 			return
 		} else {
-			alert("Syntax Error on line " + i + ".");
+			var valid = false;
+			for (var o = 0; o < commands.length; o++) {
+				var start1 = commands[o].split(",")[0];
+				var code2 = commands[o].split(",")[1];
+				if (code[i].startsWith(start1)) {
+					code2 = code2.replace(/#result#/g,code[i].substring(start1.length));
+					eval(code2);
+					valid = true
+				} else {
+					valid = false
+				}
+				if (valid == false) {
+					alert("Syntax Error on line " + (i+1) + ".");
+				}
+			}
 		}
 	}
 }
@@ -136,7 +151,7 @@ var name = "";
 setInterval(function() {
 	var text = document.getElementById('code').value;
 	var regex4 = /var ([^\n=]+)([//=]+)([^\n=]+)/g;
-	text = text.replace(regex4,"var <span style='color:gold;'>$1</span><span style='color:indego;'>$2</span><span style='color:gold;'>$3</span>");
+	text = text.replace(regex4,"var <span style='color:gold;'>$1</span><span style='color:crimson;'>$2</span><span style='color:gold;'>$3</span>");
 	var regex3 = /print ([^\n]+)/g;
 	text = text.replace(regex3,"<span style='color:gold;'>print $1</span>");
 	text = text.replace(/print/g,"<span style='color:orange;'>print</span>");
@@ -159,3 +174,7 @@ function count() {
 function l(string) { // Just to make things easier.
 	console.log(string);
 }
+function newCommand(code4,startsWith) {
+	commands.push(code4 + "," + startsWith);
+}
+newCommand("cls","document.getElementById('player').innerHTML = '';");
