@@ -2,6 +2,15 @@
 The source code behind the brand new CoreScript. 
 
 ---
+### Custom Commands
+Use this code to create custom commands. (run it in the console)
+
+    newCommand("say ","alert('#result#');");
+
+The code `say Hello, World` will make a alert box saying that.
+\#result# will be replaced with the text after `say`.
+
+---
 ### New Features
 - Syntax Highlighter
 - Improved variables
