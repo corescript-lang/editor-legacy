@@ -20,7 +20,7 @@ print Hello!
 </textarea>
 <div id="result">
 	<div id="bar">
-		<div id="go" onclick="exec()"></div>
+		<div id="go" onclick="run(document.getElementById('code').textContent);"></div>
 		<div id="download" onclick="download()"></div>
 		<div id="settings"  onclick="document.getElementById('settingsPopup').style.display = 'block';"></div>
 	</div>
