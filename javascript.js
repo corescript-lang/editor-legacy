@@ -176,5 +176,6 @@ function l(string) { // Just to make things easier.
 }
 function newCommand(code4,startsWith) {
 	commands.push(code4 + "," + startsWith);
+	console.log("Command Created");
 }
 newCommand("cls","document.getElementById('player').innerHTML = '';");
