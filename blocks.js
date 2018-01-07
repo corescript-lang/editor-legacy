@@ -1,1 +1,1 @@
-newfunction("msg", function(){document.getElementById("player").textContent=params.join(" ");});
+newfunction("msg", function(){document.getElementsByTagName("body")[0].innerHTML+=params.join(" ");});
