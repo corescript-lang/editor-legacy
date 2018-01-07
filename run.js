@@ -11,5 +11,6 @@ function run(code) {
     cc.shift();
     datadata = cc.join("");
     params = datadata.split(",");
+    runfunction(functionname);
   }
 }
