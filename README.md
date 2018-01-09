@@ -18,11 +18,12 @@ The code `say Hello, World` will make a alert box saying that.
 
 ---
 ### Syntax
-**Print**: Print text on the screen.
+**Print**: Print text on the screen. To insert variables, insert them in wrapped around in round brackets.
 
   
 
     print Hello, World!
+    print Hello, (name)!
 
 **Note**: Only the coder will see these notes.
 
@@ -89,6 +90,14 @@ The code `say Hello, World` will make a alert box saying that.
   
 
     :start
+    
+**Increase/Decrease**: Write a variable, then ++ to increase or -- to decrease it.
+
+  
+
+    var str = 0
+    str++
+    str--
     
 ---
 ### Examples
