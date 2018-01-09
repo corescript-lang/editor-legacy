@@ -2,6 +2,7 @@ var variables = [];
 var labels = [];
 var commands = [];
 function exec() {
+
 	document.getElementById('player').innerHTML = "";
 	variables = ["line="+i+""];
 	var code = document.getElementById('code').value.split("\n");
@@ -11,6 +12,7 @@ function exec() {
 		}
 	}
 	for (var i = 0; i < code.length; i++) {
+		var valid = false;
 		if (code[i].startsWith("var ")) {
 			var var1 = code[i].substring(4);
 			var1 = var1.replace(" = ","=");
@@ -104,22 +106,24 @@ function exec() {
 		} else if (code[i] == "stop") {
 			return
 		} else {
-			var valid = false;
+			for (var o = 0; o < commands.length; o++) {
+				if (commands[o].startsWith(commands[o].split(",")[0])) {
+					valid = true
+				}
+			}
 			for (var o = 0; o < commands.length; o++) {
 				var start1 = commands[o].split(",")[0];
 				var code2 = commands[o].split(",")[1];
 				if (code[i].startsWith(start1)) {
 					code2 = code2.replace(/#result#/g,code[i].substring(start1.length));
 					eval(code2);
-					valid = true
 				} else {
-					valid = false
-				}
-				if (valid == false) {
-					alert("Syntax Error on line " + (i+1) + ".");
+					if (valid == false) {
+						alert("Syntax Error on line " + (i+1) + ".");
+					}
 				}
 			}
-		}
+		}		
 	}
 }
 function setVar(name,setTo) {
@@ -178,4 +182,5 @@ function newCommand(code4,startsWith) {
 	commands.push(code4 + "," + startsWith);
 	console.log("Command Created");
 }
-//newCommand("cls","document.getElementById('player').innerHTML = '';");
+newCommand("cls","document.getElementById('player').innerHTML = '';");
+// Idea: newCommand("say #1# #2# times","for (var p = 0; i < #1#; p++) {alert("#1");}");
