@@ -207,14 +207,14 @@ $(function() {
 
 function replaceVars(string) {
     var result = string;
-    for (var o = 0; o < variables.length; o++) {
-        var name = variables[o].split("=")[0];
-        var value = variables[o].split("=")[1]; 
-        result = result.replace("(" + name + ")", value);
-    }
     var add = result.match(/\(add ([a-zA-Z0-9._-]+),([a-zA-Z0-9._-]+)\)/g);
-    if (!add == undefined) {
-        alert();
+    if (add == null) {
+        for (var o = 0; o < variables.length; o++) {
+            var name = variables[o].split("=")[0];
+            var value = variables[o].split("=")[1]; 
+            result = result.replace("(" + name + ")", value);
+        }
+    } else {
         result = result.replace(add[0],(+add[0].substring(5,add[0].length-1).split(",")[0]) + (+add[0].substring(5,add[0].length-1).split(",")[1]));
     }
     return result
