@@ -2,71 +2,138 @@ body,html {
 	width: 100%;
 	height: 100%;
 	margin: 0;
-	background: url(background.png);
-	background-size: cover;
-}
-ul {
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
-	width: 100%;
 	overflow: hidden;
-	border-bottom: 1px solid black;
-	background-color: gold;
 }
-li a {
-    display: block;
-    color: black;
-    padding: 10px 16px;
-    text-decoration: none;
+#overlay {
+	padding: 2px 2px 0;
+	background-color: rgb(66,66,66);
+	height: 100%;
+	color: rgb(212,212,212);
+	overflow-y: hidden;
+	white-space: pre;
 }
-li {
-	float: left;
+#code::selection { 
+	background-color: rgba(255,255,255,0.3);
 }
-li a:hover {
-	background-color: orange;
-}
-#box #header h3 {
-	margin-top: 0px;
-	padding: 3px 10px;
-	font-size: 23px;
-	color: #212121;
-}
-#box #header {
-	width: 100%;
-	border-top-right-radius: 8px;
-	border-top-left-radius: 8px;
-	height: 30px;
-	border-bottom: 1px solid grey;
-	background: #d8d8d8;
-}
-#box p {
-	margin-left: 15px;
-}
-#box {
-	width: 98%;
-	border: 1px solid grey;
-	border-radius: 10px;
-	margin-top: 1%;
-	margin-left: 1%;
-	background: white;
-}
-.updates {
-	height: 400px;
-}
-.featured {
-	height: auto;
-	display: inline-block;
-}
-.featured #project {
-	height: 160px;
+#go {
+	width: 33px;
+	height: 33px;
+	background-image: url(go.png);
+	background-size: cover;
 	cursor: pointer;
-	width: 160px;
-	margin-top: 3px;
-	margin-left: 3px;
 	float: left;
-	margin-bottom: 3px;
-	border-radius: 10px;
+}
+#download {
+	width: 33px;
+	height: 33px;
+	background-image: url(download.png);
+	background-size: cover;
+	cursor: pointer;
+	float: right;
+}
+#settings {
+	margin-right: 5px;
+	width: 33px;
+	height: 33px;
+	background-image: url(settings.png);
+	background-size: cover;
+	cursor: pointer;
+	float: right;
+}
+#bar {
+	width: 100%;
+	border-bottom: 1px solid black;
+	height: 35px;
+}
+#code {
+	height: 100%;
+	color: transparent;
+	caret-color: rgb(212,212,212);
+	box-sizing: border-box;
+	background: transparent;
+	overflow-y: scroll;
+
+}
+div {
+	box-sizing: border-box;
+}
+#code,#overlay {
+	width: 50%;
+	left: 2%;
+	font-family: arial;
+	position: absolute;
+	outline: none;
+	top: 0px;
+	font-size: 1em;
+	line-height: 1em;
+	resize: none;
 	border: 1px solid black;
-	background: white;
+	float: left;
+}
+#counter {
+	width: 2%;
+	height: 100%;
+	font-family: arial;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	float: left;
+	border-top: 1px solid black;
+	border-left: transparent;
+	border-right: transparent;
+	border-bottom: 1px solid black;
+	color: white;
+	background-color: rgb(66,66,66);
+	overflow-y: hidden;
+}
+#settingsPopup {
+	position: absolute;
+	top: 10%;
+	left: 10%;
+	width: 80%;
+	height: 80%;
+	border: 1px solid black;
+	display: none;
+	background-color: white;
+}
+#alert {
+	position: absolute;
+	bottom: 0px;
+	width: 80%;
+	left: 10%;
+}
+#settingsPopup #close {
+	width: 23px;
+	height: 23px;
+	background: red;
+	color: white;
+	cursor: pointer;
+	float: right;
+}
+#settingsPopup #draggy {
+	height: 23px;
+	background-color: lightgrey;
+	cursor: move;
+	user-select: none;
+}
+#counter p {
+	color: white;
+	margin: 0px;
+	width: 99%;
+	text-align: right;
+	float:right;
+	margin-right: 5px;
+	font-size: 1em;
+	line-height: 1em;
+	font-family: arial;
+}
+#result {
+	width: 48%;
+	height: 100%;
+	border: 1px solid black;
+	float: right;
+	font-family: times new roman;
+	position: absolute;
+	bottom: 0px;
+	right: 0px;
 }
