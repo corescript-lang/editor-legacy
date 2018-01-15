@@ -4,11 +4,8 @@ var commands = [];
 
 function exec() {
     document.getElementById('player').innerHTML = "";
-    // Preloaded variables
     variables = ["date="+ new Date().toJSON().slice(0,10)+ ""];
-    // Split the code by breaks
     var code = document.getElementById('code').value.split("\n");
-    // Check for labels and store them in an array
     for (var p = 0; p < code.length; p++) {
         if (code[p].startsWith(":")) {
             labels.push(code[p].substring(1) + "=" + p);
@@ -36,6 +33,9 @@ function exec() {
                 if (var2 == "" || var3 == "") {
                     alert("Syntax Error on line " + (i + 1) + ".");
                 } else {
+                    if (var3.startsWith("random(") && endsWith(")")) {
+                        var random1 = var3.substring(7);
+                    }
                     variables.push(var2 + "=" + var3);
                 }
             } else {
@@ -162,7 +162,7 @@ function exec() {
             return
         } else {
             for (var o = 0; o < commands.length; o++) {
-                if (commands[o].startsWith(commands[o].split(",")[0])) {
+                if (current.startsWith(commands[o].split(",")[0])) {
                     valid = true
                 }
             }
@@ -172,13 +172,11 @@ function exec() {
                 if (current.startsWith(start1)) {
                     code2 = code2.replace(/#result#/g, current.substring(start1.length));
                     eval(code2);
-                } else {
-                    if (!valid) {
-                        alert("Syntax Error on line " + (i + 1) + ".");
-                    }
                 }
             }
-            alert(valid);
+            if (!valid) {
+                alert("Syntax Error on line " + (i + 1) + ".");
+            }
         }
     }
 }
@@ -211,10 +209,13 @@ function replaceVars(string) {
     var result = string;
     for (var o = 0; o < variables.length; o++) {
         var name = variables[o].split("=")[0];
-        var value = variables[o].split("=")[1];
-        var regex2 = /\(add ([a-zA-Z0-9_-]+),([a-zA-Z0-9_-]+)\)/g;
-        result = result.replace(regex2, "" + getVar("$1") + ",$2");
+        var value = variables[o].split("=")[1]; 
         result = result.replace("(" + name + ")", value);
+    }
+    var add = result.match(/\(add ([a-zA-Z0-9._-]+),([a-zA-Z0-9._-]+)\)/g);
+    if (!add == undefined) {
+        alert();
+        result = result.replace(add[0],(+add[0].substring(5,add[0].length-1).split(",")[0]) + (+add[0].substring(5,add[0].length-1).split(",")[1]));
     }
     return result
 }
@@ -233,23 +234,27 @@ setInterval(function() {
     var regex4 = /var ([^\n=]+)([//=]+)([^\n=]+)/g;
     var regex1 = /\/\/([a-zA-Z0-9~!@#$%^&* =;'`]*)/g;
     var regex3 = /print ([^\n]+)/g;
+    var regex12 = /msg ([^\n]+)/g;
     var regex5 = /([^\n]+)\+\+/g;
     var regex6 = /([^\n]+)--/g;
     var regex8 = /\(([^)(]+)\)/g;
     var regex7 = /input ([^\n=]+)([//=]+)([^\n=]+)/g;
     var regex9 = /if ([^\n=]+)([//=]+)([^\n=]+)/g;
     var regex10 = /not ([^\n=]+)([//=]+)([^\n=]+)/g;
-    var regex11 = /:([^\n=]+)/g;
-    text = text.replace(regex11, "<span style='color:lightblue;'>:$1</span>");
+    var regex11 = /\n:([^\n=]+)/g;
+    text = text.replace(/</g,"<&zwnj;"); 
+    text = text.replace(/>/g,"&zwnj;>");
+    text = text.replace(regex11, "<br><span style='color:lightblue;'>:$1</span>");
     text = text.replace(regex8, "(<span style='color:white;'>$1</span>)");
     text = text.replace(regex4, "<span style='color:rgb(0,128,155);'>var</span> <span style='color:rgb(230,219,116);'>$1</span><span style='color:crimson;'>$2</span><span style='color:rgb(230,219,116);'>$3</span>");
     text = text.replace(regex3, "<span style='color:gold;'>print </span><span style='color:rgb(230,219,116);'>$1</span>");
     text = text.replace(regex9, "<span style='color:rgb(0,128,155);'>if</span> <span style='color:rgb(230,219,116);'>$1</span><span style='color:crimson;'>$2</span><span style='color:rgb(230,219,116);'>$3</span>");
     text = text.replace(regex1, "<span style='color:rgb(150,150,150);'>//$1</span>");
     text = text.replace(regex10, "<span style='color:rgb(0,128,155);'>not</span> <span style='color:rgb(230,219,116);'>$1</span><span style='color:crimson;'>$2</span><span style='color:rgb(230,219,116);'>$3</span>");
-    text = text.replace("stop", "<span style='color:red;'>stop</span>");
+    text = text.replace(/stop/g, "<span style='color:red;'>stop</span>");
     text = text.replace(regex5, "<span style='color:lightgreen;'>$1++</span>");
     text = text.replace(regex6, "<span style='color:red;'>$1--</span>");
+    text = text.replace(regex12, "<span style='color:cyan;'>msg </span><span style='color:rgb(230,219,116);'>$1</span>");
     text = text.replace(regex7, "<span style='color:rgb(0,128,155);'>input</span> <span style='color:rgb(230,219,116);'>$1</span><span style='color:crimson;'>$2</span><span style='color:rgb(230,219,116);'>$3</span>");
     text = text.toString().replace(/\n/g, "<br>");
     document.getElementById("overlay").innerHTML = text;
