@@ -105,6 +105,7 @@ function exec() {
                             for (var o = 0; o < labels.length; o++) {
                                 if (labels[o].startsWith(code1)) {
                                     i = labels[o].split("=")[1];
+
                                 }
                             }
                         } else {
@@ -148,10 +149,22 @@ function exec() {
             }
         } else if (current.endsWith("++")) {
             var plusplus = current.substring(0, current.length - 2);
-            setVar(plusplus, +getVar(plusplus) + 1);
+            if (repeat) {
+                for (var p = 0; p < +times; p++) {
+                    setVar(plusplus, +getVar(plusplus) + 1);
+                }
+            } else {
+                setVar(plusplus, +getVar(plusplus) + 1);
+            }
         } else if (current.endsWith("--")) {
             var minusminus = current.substring(0, current.length - 2);
-            setVar(minusminus, +getVar(minusminus) - 1);
+            if (repeat) {
+                for (var p = 0; p < +times; p++) {
+                    setVar(minusminus, +getVar(minusminus) - 1);
+                }
+            } else {
+                setVar(minusminus, +getVar(minusminus) - 1);
+            }
         } else if (current == "") {
             // Allow blank returns
         } else if (current.startsWith("//")) {
@@ -207,17 +220,27 @@ $(function() {
 
 function replaceVars(string) {
     var result = string;
-    var add = result.match(/\(add ([a-zA-Z0-9._-]+),([a-zA-Z0-9._-]+)\)/g);
-    if (add == null) {
-        for (var o = 0; o < variables.length; o++) {
-            var name = variables[o].split("=")[0];
-            var value = variables[o].split("=")[1]; 
-            result = result.replace("(" + name + ")", value);
+    for (var q = 0; q < 10; q++) {
+        var add = result.match(/\(add ([a-zA-Z0-9._-]+),([a-zA-Z0-9._-]+)\)/g);
+        var random = result.match(/\(random ([a-zA-Z0-9._-]+),([a-zA-Z0-9._-]+)\)/g);
+        if (add == null && random == null) {
+            for (var w = 0; w < variables.length; w++) {
+                var name = variables[w].split("=")[0];
+                var value = variables[w].split("=")[1]; 
+                result = result.replace("(" + name + ")", value);
+            }
+        } else {
+            if (random == null) {
+                result = result.replace(add[0],(+add[0].substring(5,add[0].length-1).split(",")[0]) + (+add[0].substring(5,add[0].length-1).split(",")[1]));
+            } else {
+                result = result.replace(random[0], Math.floor((Math.random() * (+random[0].substring(7,random[0].length-1).split(",")[1])) + (+random[0].substring(7,random[0].length-1).split(",")[0])));
+            }
+           
         }
-    } else {
-        result = result.replace(add[0],(+add[0].substring(5,add[0].length-1).split(",")[0]) + (+add[0].substring(5,add[0].length-1).split(",")[1]));
     }
-    return result
+    return result.toString();
+
+
 }
 function download() {
     // Downloading code from https://stackoverflow.com/users/2438165/mat%C4%9Bj-pokorn%C3%BD
@@ -229,7 +252,7 @@ function download() {
     element.click();
     document.body.removeChild(element);
 }
-setInterval(function() {
+function update() {
     var text = document.getElementById('code').value;
     var regex4 = /var ([^\n=]+)([//=]+)([^\n=]+)/g;
     var regex1 = /\/\/([a-zA-Z0-9~!@#$%^&* =;'`]*)/g;
@@ -242,10 +265,11 @@ setInterval(function() {
     var regex9 = /if ([^\n=]+)([//=]+)([^\n=]+)/g;
     var regex10 = /not ([^\n=]+)([//=]+)([^\n=]+)/g;
     var regex11 = /\n:([^\n=]+)/g;
+    var regex13 = /repeat ([0-9]+):/g;
     text = text.replace(/</g,"<&zwnj;"); 
     text = text.replace(/>/g,"&zwnj;>");
+    // text = text.replace(regex8, "(<span style='color:white;'>$1</span>)");
     text = text.replace(regex11, "<br><span style='color:lightblue;'>:$1</span>");
-    text = text.replace(regex8, "(<span style='color:white;'>$1</span>)");
     text = text.replace(regex4, "<span style='color:rgb(0,128,155);'>var</span> <span style='color:rgb(230,219,116);'>$1</span><span style='color:crimson;'>$2</span><span style='color:rgb(230,219,116);'>$3</span>");
     text = text.replace(regex3, "<span style='color:gold;'>print </span><span style='color:rgb(230,219,116);'>$1</span>");
     text = text.replace(regex9, "<span style='color:rgb(0,128,155);'>if</span> <span style='color:rgb(230,219,116);'>$1</span><span style='color:crimson;'>$2</span><span style='color:rgb(230,219,116);'>$3</span>");
@@ -256,10 +280,11 @@ setInterval(function() {
     text = text.replace(regex6, "<span style='color:red;'>$1--</span>");
     text = text.replace(regex12, "<span style='color:cyan;'>msg </span><span style='color:rgb(230,219,116);'>$1</span>");
     text = text.replace(regex7, "<span style='color:rgb(0,128,155);'>input</span> <span style='color:rgb(230,219,116);'>$1</span><span style='color:crimson;'>$2</span><span style='color:rgb(230,219,116);'>$3</span>");
+    text = text.replace(regex13,"<span style='color:lightgreen;'>repeat $1:</span>");
     text = text.toString().replace(/\n/g, "<br>");
     document.getElementById("overlay").innerHTML = text;
     count();
-}, 10);
+}
 // window.onbeforeunload = function(e) {
 //     return "Are you sure you want to leave?";
 // };
