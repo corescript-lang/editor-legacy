@@ -1,9 +1,13 @@
+/*
+ ~ IDEAS ~ 
+ > button click = exec(line)
+*/
 var syntax = true;
 var variables = [];
 var labels = [];
 var commands = [];
 
-function exec() {
+function exec(line1) {
     document.getElementById('player').innerHTML = "";
     variables = ["date="+ new Date().toJSON().slice(0,10)+ ""];
     var code = document.getElementById('code').value.split("\n");
@@ -12,7 +16,7 @@ function exec() {
             labels.push(code[p].substring(1) + "=" + p);
         }
     }
-    for (var i = 0; i < code.length; i++) {
+    for (var i = line1; i < code.length; i++) {
         var current = code[i];
         var repeat = false;
         var times;
@@ -49,10 +53,10 @@ function exec() {
             var print1 = current.substring(6);
             if (repeat) {
                 for (var p = 0; p < +times; p++) {
-                    document.getElementById('player').innerHTML += replaceVars(print1);
+                    document.getElementById('player').innerHTML += replaceVars(print1) + '<br style="line-height:0px;" />';
                 }
             } else {
-                document.getElementById('player').innerHTML += replaceVars(print1);
+                document.getElementById('player').innerHTML += replaceVars(print1) + '<br style="line-height:0px;" />';  
             }
         } else if (current.startsWith("input ")) {
             if (current.includes("=")) {
@@ -177,6 +181,11 @@ function exec() {
 
         } else if (current == "") {
 
+        } else if (current.startsWith("button ")) {
+            var button1 = current.substring(7);
+            var button2 = button1.split(":")[0];
+            var button3 = button1.split(":")[1];
+            document.getElementById('player').innerHTML += "<span style='cursor:pointer;' onclick='exec("+(+button3 - 1)+")'>" + button2 + "</span>";
         } else if (current == "Meeska! Mooska! Mickey Mouse!") {
             // Easter Eggs!
             document.getElementById('player').innerHTML += "<img width='400' src='https://images-na.ssl-images-amazon.com/images/S/sgp-catalog-images/region_US/abc-MMC_VOLUME_010-Full-Image_GalleryBackground-en-US-1504651650211._RI_SX940_.jpg'>";
@@ -230,7 +239,8 @@ function replaceVars(string) {
     for (var q = 0; q < 10; q++) {
         var add = result.match(/\(add ([a-zA-Z0-9._-]+),([a-zA-Z0-9._-]+)\)/g);
         var random = result.match(/\(random ([a-zA-Z0-9._-]+),([a-zA-Z0-9._-]+)\)/g);
-        if (add == null && random == null) {
+        var subtract = result.match(/\(subtract ([a-zA-Z0-9._-]+),([a-zA-Z0-9._-]+)\)/g);
+        if (add == null && random == null && subtract == null) {
             for (var w = 0; w < variables.length; w++) {
                 var name = variables[w].split("=")[0];
                 var value = variables[w].split("=")[1];
@@ -245,17 +255,17 @@ function replaceVars(string) {
                 
             }
         } else {
-            if (random == null) {
-                result = result.replace(add[0],(+add[0].substring(5,add[0].length-1).split(",")[0]) + (+add[0].substring(5,add[0].length-1).split(",")[1]));
-            } else {
+            if (random != null) {
                 result = result.replace(random[0], Math.floor((Math.random() * (+random[0].substring(7,random[0].length-1).split(",")[1])) + (+random[0].substring(7,random[0].length-1).split(",")[0]))).toString();
+            } else if (add != null) {
+                result = result.replace(add[0],(+add[0].substring(5,add[0].length-1).split(",")[0]) + (+add[0].substring(5,add[0].length-1).split(",")[1]));
+            } else if (subtract != null) {
+                alert(subtract);
+                result = result.replace(subtract[0],(+subtract[0].substring(9,subtract[0].length-1).split(",")[0]) - (+subtract[0].substring(9,subtract[0].length-1).split(",")[1]));
             }
-           
         }
     }
     return result
-
-
 }
 function download() {
     // Downloading code from https://stackoverflow.com/users/2438165/mat%C4%9Bj-pokorn%C3%BD
@@ -327,6 +337,9 @@ function update() {
     }
     count();
 }
+setInterval(function() {
+    count();
+},10);
 // window.onbeforeunload = function(e) {
 //     return "Are you sure you want to leave?";
 // };
