@@ -57,6 +57,10 @@ body,html {
 div {
 	box-sizing: border-box;
 }
+#player {
+	line-height: 1;
+	white-space: pre;
+}
 #code,#overlay {
 	width: 50%;
 	left: 2%;
@@ -132,7 +136,6 @@ div {
 	height: 100%;
 	border: 1px solid black;
 	float: right;
-	font-family: times new roman;
 	position: absolute;
 	bottom: 0px;
 	right: 0px;
