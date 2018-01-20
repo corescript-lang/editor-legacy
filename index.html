@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>CoreScript 1.0.1</title>
+	<title>CoreScript 1.0.2</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
 	</script>
@@ -14,7 +14,7 @@
 	<link rel="stylesheet" href="style.css">
 
 </head>
-<body>
+<body onload="update()">
 <br>
 <div id="counter">
 
@@ -22,12 +22,12 @@
 <div id="overlay">
 	
 </div>
-<textarea id="code" spellcheck="false">
-print Hello!
+<textarea id="code" spellcheck="false" onchange="update()" onkeyup="update()" onkeydown="update()">
+print Hello, World!
 </textarea>
 <div id="result">
 	<div id="bar">
-		<div id="go" onclick="exec()"></div>
+		<div id="go" onclick="exec(0)"></div>
 		<div id="download" onclick="download()"></div>
 		<div id="settings"  onclick="document.getElementById('settingsPopup').style.display = 'block';"></div>
 	</div>
@@ -44,10 +44,12 @@ print Hello!
 		</div>
 		<span><b>Settings</b></span>
 	</div>
+	<span>Syntax Highlighting: </span>
+	<input type="checkbox" checked="true" onchange="if (this.checked) {syntax = true;update()} else {syntax = false;update()}" id="syntaxhi">
 </div>
 <div class="alert alert-success alert-dismissable" id="alert">
   <a href="#" class="close" data-dismiss="alert" aria-label="close" onclick="this.parentElement.style.visibility = 'hidden';">&times;</a>
-  <strong>Welcome!</strong> The brand new Corescript has been released! <a href="#">Read more...</a>
+  <strong>Welcome!</strong> Corescript 1.0.2 is out! <a href="#">Read more...</a>
 </div>
 </body>
 </html>
