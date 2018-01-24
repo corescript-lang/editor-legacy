@@ -4,6 +4,25 @@ body,html {
 	margin: 0;
 	overflow: hidden;
 }
+#contextmenu {
+	width: 130px;
+	height: 100px;
+	background: white;
+	border: 1px solid black;
+	position: absolute;
+	display: none;
+	top: 0px;
+	left: 0px;	
+}
+#contextmenu p {
+	width: 100%;
+	margin-top: 0px;
+	cursor: pointer;
+	border-bottom: 1px solid black;
+}
+#contextmenu p:hover {
+	background: lightgrey;
+}
 #overlay {
 	padding: 2px 2px 0;
 	background-color: rgb(66,66,66);
@@ -40,6 +59,15 @@ body,html {
 	cursor: pointer;
 	float: right;
 }
+#popup {
+	width: 400px;
+	height: 200px;
+	border: 1px solid black;
+	background: white;
+	position: absolute;
+	top: 40%;
+	left: 40%;
+}
 #bar {
 	width: 100%;
 	border-bottom: 1px solid black;
@@ -60,6 +88,10 @@ div {
 #player {
 	line-height: 1;
 	white-space: pre;
+	min-width: 200px;
+	min-height: 200px;
+	width: auto;
+	height: auto;
 }
 #code,#overlay {
 	width: 50%;
