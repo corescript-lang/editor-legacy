@@ -3,13 +3,16 @@
  > button click = exec(line)
 */
 var syntax = true;
+var hoverplayer;
 var variables = [];
 var labels = [];
 var commands = [];
+var x;
+var y;
 
 function exec(line1) {
     document.getElementById('player').innerHTML = "";
-    variables = ["date="+ new Date().toJSON().slice(0,10)+ ""];
+    variables = [];
     var code = document.getElementById('code').value.split("\n");
     for (var p = 0; p < code.length; p++) {
         if (code[p].startsWith(":")) {
@@ -27,7 +30,7 @@ function exec(line1) {
             current = current.split(":")[1];
         }
         var valid = false;
-        current = current.replace(/\/\/[^]+/g,"");
+        current = current.replace(/\/\/[^]+/g, "");
         if (current.startsWith("var ")) {
             if (current.includes("=")) {
                 var var1 = current.substring(4);
@@ -56,7 +59,7 @@ function exec(line1) {
                     document.getElementById('player').innerHTML += replaceVars(print1) + '<br style="line-height:0px;" />';
                 }
             } else {
-                document.getElementById('player').innerHTML += replaceVars(print1) + '<br style="line-height:0px;" />';  
+                document.getElementById('player').innerHTML += replaceVars(print1) + '<br style="line-height:0px;" />';
             }
         } else if (current.startsWith("input ")) {
             if (current.includes("=")) {
@@ -157,6 +160,9 @@ function exec(line1) {
             }
         } else if (current.startsWith("set ")) {
 
+        } else if (current.startsWith("include ")) {
+            var url = current.substring(8);
+            document.head.append('<script src="' + url + '"></script>');
         } else if (current.endsWith("++")) {
             var plusplus = current.substring(0, current.length - 2);
             if (repeat) {
@@ -185,7 +191,17 @@ function exec(line1) {
             var button1 = current.substring(7);
             var button2 = button1.split(":")[0];
             var button3 = button1.split(":")[1];
-            document.getElementById('player').innerHTML += "<span style='cursor:pointer;' onclick='exec("+(+button3 - 1)+")'>" + button2 + "</span>";
+            if (!isNaNw(button3)) {
+                document.getElementById('player').innerHTML += "<span style='cursor:pointer;' onclick='exec(" + (+button3 - 1) + ")'>" + button2 + "</span>";
+            } else {
+                var button4;
+                for (var a = 0; a < labels.length; a++) {
+                    if (labels[a].split("=")[0] == button3) {
+                        button4 = labels[a].split("=")[1];
+                    }
+                }
+                document.getElementById('player').innerHTML += "<span style='cursor:pointer;' onclick='exec(" + button4 + ")'>" + button2 + "</span>";
+            }
         } else if (current == "Meeska! Mooska! Mickey Mouse!") {
             // Easter Eggs!
             document.getElementById('player').innerHTML += "<img width='400' src='https://images-na.ssl-images-amazon.com/images/S/sgp-catalog-images/region_US/abc-MMC_VOLUME_010-Full-Image_GalleryBackground-en-US-1504651650211._RI_SX940_.jpg'>";
@@ -225,14 +241,15 @@ function getVar(name) {
         }
     }
 }
-$(function() {
-    $("#settingsPopup").draggable({
-        handle: '#draggy'
-    });
-    $("#settingsPopup").draggable({
-        containment: "window"
-    });
-});
+
+// $(function() {
+//     $("#settingsPopup").draggable({
+//         handle: '#draggy'
+//     });
+//     $("#settingsPopup").draggable({
+//         containment: "window"
+//     });
+// });
 
 function replaceVars(string) {
     var result = string;
@@ -245,28 +262,29 @@ function replaceVars(string) {
                 var name = variables[w].split("=")[0];
                 var value = variables[w].split("=")[1];
                 if (value.startsWith("[") && value.endsWith("]")) {
-                    var array = value.substring(1,value.length - 1).split(",");
+                    var array = value.substring(1, value.length - 1).split(",");
                     for (var z = 0; z < 30; z++) {
                         result = result.replace("(" + name + "[" + z + "])", array[z - 1]);
                     }
                 } else {
                     result = result.replace("(" + name + ")", value);
                 }
-                
+
             }
         } else {
             if (random != null) {
-                result = result.replace(random[0], Math.floor((Math.random() * (+random[0].substring(7,random[0].length-1).split(",")[1])) + (+random[0].substring(7,random[0].length-1).split(",")[0]))).toString();
+                result = result.replace(random[0], Math.floor((Math.random() * (+random[0].substring(7, random[0].length - 1).split(",")[1])) + (+random[0].substring(7, random[0].length - 1).split(",")[0]))).toString();
             } else if (add != null) {
-                result = result.replace(add[0],(+add[0].substring(5,add[0].length-1).split(",")[0]) + (+add[0].substring(5,add[0].length-1).split(",")[1]));
+                result = result.replace(add[0], (+add[0].substring(5, add[0].length - 1).split(",")[0]) + (+add[0].substring(5, add[0].length - 1).split(",")[1]));
             } else if (subtract != null) {
                 alert(subtract);
-                result = result.replace(subtract[0],(+subtract[0].substring(9,subtract[0].length-1).split(",")[0]) - (+subtract[0].substring(9,subtract[0].length-1).split(",")[1]));
+                result = result.replace(subtract[0], (+subtract[0].substring(9, subtract[0].length - 1).split(",")[0]) - (+subtract[0].substring(9, subtract[0].length - 1).split(",")[1]));
             }
         }
     }
     return result
 }
+
 function download() {
     // Downloading code from https://stackoverflow.com/users/2438165/mat%C4%9Bj-pokorn%C3%BD
     var element = document.createElement('a');
@@ -277,24 +295,26 @@ function download() {
     element.click();
     document.body.removeChild(element);
 }
+
 function upload() {
     var upload = document.createElement('INPUT');
     upload.type = "file";
     document.body.appendChild(upload);
     upload.click();
-     var file = upload.files[0];
-  if (file) {
-      var reader = new FileReader();
-      reader.readAsText(file, "UTF-8");
-      reader.onload = function(evt) {
-         alert(evt.target.result);
-      }
-      reader.onerror = function(evt) {
-          alert("Error");
-      }
-  }
+    var file = upload.files[0];
+    if (file) {
+        var reader = new FileReader();
+        reader.readAsText(file, "UTF-8");
+        reader.onload = function(evt) {
+            alert(evt.target.result);
+        }
+        reader.onerror = function(evt) {
+            alert("Error");
+        }
+    }
     document.body.removeChild(upload);
 }
+
 function update() {
     if (syntax) {
         document.getElementById("overlay").style.visibility = "visible";
@@ -313,21 +333,21 @@ function update() {
         var regex10 = /not ([^\n=]+)([//=]+)([^\n=]+)/g;
         var regex11 = /\n:([^\n=]+)/g;
         var regex13 = /repeat ([0-9]+):/g;
-        text = text.replace(/</g,"<&zwnj;"); 
-        text = text.replace(/>/g,"&zwnj;>");
+        text = text.replace(/</g, "<&zwnj;");
+        text = text.replace(/>/g, "&zwnj;>");
+        text = text.replace(regex1, "<span style='color:rgb(150,150,150);'>//$1</span>");
         // text = text.replace(regex8, "(<span style='color:white;'>$1</span>)");
         text = text.replace(regex11, "<br><span style='color:lightblue;'>:$1</span>");
         text = text.replace(regex4, "<span style='color:rgb(0,128,155);'>var</span> <span style='color:rgb(230,219,116);'>$1</span><span style='color:crimson;'>$2</span><span style='color:rgb(230,219,116);'>$3</span>");
         text = text.replace(regex3, "<span style='color:gold;'>print </span><span style='color:rgb(230,219,116);'>$1</span>");
         text = text.replace(regex9, "<span><span style='color:rgb(0,128,155);'>if</span> <span style='color:rgb(230,219,116);'>$1</span><span style='color:crimson;'>$2</span><span style='color:rgb(230,219,116);'>$3</span></span><span></span>");
-        text = text.replace(regex1, "<span style='color:rgb(150,150,150);'>//$1</span>");
         text = text.replace(regex10, "<span style='color:rgb(0,128,155);'>not</span> <span style='color:rgb(230,219,116);'>$1</span><span style='color:crimson;'>$2</span><span style='color:rgb(230,219,116);'>$3</span>");
         text = text.replace(/stop/g, "<span style='color:red;'>stop</span>");
         text = text.replace(regex5, "<span style='color:lightgreen;'>$1++</span>");
         text = text.replace(regex6, "<span style='color:red;'>$1--</span>");
         text = text.replace(regex12, "<span style='color:cyan;'>msg </span><span style='color:rgb(230,219,116);'>$1</span>");
         text = text.replace(regex7, "<span style='color:rgb(0,128,155);'>input</span> <span style='color:rgb(230,219,116);'>$1</span><span style='color:crimson;'>$2</span><span style='color:rgb(230,219,116);'>$3</span>");
-        text = text.replace(regex13,"<span style='color:lightgreen;'>repeat $1:</span>");
+        text = text.replace(regex13, "<span style='color:lightgreen;'>repeat $1:</span>");
         text = text.toString().replace(/\n/g, "<br>");
         document.getElementById("overlay").innerHTML = text;
     } else {
@@ -337,9 +357,9 @@ function update() {
     }
     count();
 }
-setInterval(function() {
-    count();
-},10);
+// setInterval(function() {
+//     count();
+// },10);
 // window.onbeforeunload = function(e) {
 //     return "Are you sure you want to leave?";
 // };
@@ -361,5 +381,23 @@ function newCommand(code4, startsWith) {
     commands.push(code4 + "," + startsWith);
     console.log("Command Created");
 }
-newCommand("cls", "document.getElementById('player').innerHTML = '';");
-// Idea: newCommand("say #1# #2# times","for (var p = 0; i < #1#; p++) {alert("#1");}");
+
+function contextmenu() {
+    getCoords();
+    document.getElementById('contextmenu').style.display = "block";
+    document.getElementById('contextmenu').style.top = y + "px";
+    document.getElementById('contextmenu').style.left = x + "px";
+}
+
+if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
+    popup("Mobile Device","It seems that you are using a mobile device. If you would like the full experience, please visit this page on a laptop or desktop computer.");
+}
+
+function getCoords(e) {
+    x = event.clientX;
+    y = event.clientY;
+}
+
+function popup(title,text) {
+    document.getElementsByTagName('body')[0].innerHTML += "<div id='popup'><span><b>"+title+"</b></span><br>"+text+"<br><center><button onclick='this.parentElement.parentElement.outerHTML = "+'""'+"'>Dismiss</button></center></div>";
+}
