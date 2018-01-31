@@ -191,7 +191,7 @@ function exec(line1) {
             var button1 = current.substring(7);
             var button2 = button1.split(":")[0];
             var button3 = button1.split(":")[1];
-            if (!isNaNw(button3)) {
+            if (!isNaN(button3)) {
                 document.getElementById('player').innerHTML += "<span style='cursor:pointer;' onclick='exec(" + (+button3 - 1) + ")'>" + button2 + "</span>";
             } else {
                 var button4;
@@ -398,6 +398,11 @@ function getCoords(e) {
     y = event.clientY;
 }
 
+function sl() {
+    document.getElementById('loading').style.display = "none";
+}
+
 function popup(title,text) {
     document.getElementsByTagName('body')[0].innerHTML += "<div id='popup'><span><b>"+title+"</b></span><br>"+text+"<br><center><button onclick='this.parentElement.parentElement.outerHTML = "+'""'+"'>Dismiss</button></center></div>";
 }
+
