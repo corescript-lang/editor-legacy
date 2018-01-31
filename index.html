@@ -6,41 +6,45 @@
 	<script src="javascript.js"></script> 
 	<link rel="stylesheet" href="style.css">
 </head>
-<body onload="update(); " oncontextmenu="return false;" onclick='document.getElementById("contextmenu").style.display = "none"'>
-<br>
-<div id="counter">
-
-</div>
-<div id="overlay">
-	
-</div>
-<textarea id="code" spellcheck="false" onchange="update()" onkeyup="update()" onkeydown="update()">
-print Hello, World!
-</textarea>
-<div id="result" onmouseleave="hoverplayer = false" onmouseover="hoverplayer = true" oncontextmenu="contextmenu()">
-	<div id="bar">
-		<div id="go" onclick="exec(0)"></div>
-		<div id="download" onclick="download()"></div>
-		<div id="settings"  onclick="document.getElementById('settingsPopup').style.display = 'block';"></div>
+<body onload="update();sl()" oncontextmenu="return false;" onclick='document.getElementById("contextmenu").style.display = "none"'>
+	<div id="loading">
+		<center>
+			<img src="loading.gif">
+		</center>
 	</div>
-	<div id="player">
+	<div id="counter">
+
+	</div>
+	<div id="overlay">
 		
 	</div>
-</div>
-<div id="settingsPopup">
-	<div id="draggy">
-		<div id="close" onclick="document.getElementById('settingsPopup').style.display = 'none';">
-		<center>
-			<span>X</span>
-		</center>
+	<textarea id="code" spellcheck="false" onchange="update()" onkeyup="update()" onkeydown="update()">
+print Hello, World!
+	</textarea>
+	<div id="result" onmouseleave="hoverplayer = false" onmouseover="hoverplayer = true" oncontextmenu="contextmenu()">
+		<div id="bar">
+			<div id="go" onclick="exec(0)"></div>
+			<div id="download" onclick="download()"></div>
+			<div id="settings"  onclick="document.getElementById('settingsPopup').style.display = 'block';"></div>
 		</div>
-		<span><b>Settings</b></span>
+		<div id="player">
+			
+		</div>
 	</div>
-	<span>Syntax Highlighting: </span>
-	<input type="checkbox" checked="true" onchange="if (this.checked) {syntax = true;update()} else {syntax = false;update()}" id="syntaxhi">
-</div>
-<div id="contextmenu">
-	<p onclick="screenshot()">Take Screenshot</p>
-</div>
+	<div id="settingsPopup">
+		<div id="draggy">
+			<div id="close" onclick="document.getElementById('settingsPopup').style.display = 'none';">
+			<center>
+				<span>X</span>
+			</center>
+			</div>
+			<span><b>Settings</b></span>
+		</div>
+		<span>Syntax Highlighting: </span>
+		<input type="checkbox" checked="true" onchange="if (this.checked) {syntax = true;update()} else {syntax = false;update()}" id="syntaxhi">
+	</div>
+	<div id="contextmenu">
+		<p onclick="screenshot()">Take Screenshot</p>
+	</div>
 </body>
 </html>
