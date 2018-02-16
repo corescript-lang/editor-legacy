@@ -2,6 +2,7 @@
 <html>
 <head>
 	<title>CoreScript 1.0.3</title>
+	<script type="text/javascript" src="jquery.js"></script>
 	<script type="text/javascript" src="html2canvas.js"></script>
 	<script src="javascript.js"></script> 
 	<link rel="stylesheet" href="style.css">
@@ -18,14 +19,13 @@
 	<div id="overlay">
 		
 	</div>
-	<textarea id="code" spellcheck="false" onchange="update()" onkeyup="update()" onkeydown="update()">
-print Hello, World!
-	</textarea>
+	<textarea id="code" spellcheck="false" onchange="update()" onkeyup="update()" onkeydown="update()">print Hello, World!</textarea>
 	<div id="result" onmouseleave="hoverplayer = false" onmouseover="hoverplayer = true" oncontextmenu="contextmenu()">
 		<div id="bar">
-			<div id="go" onclick="exec(0)"></div>
-			<div id="download" onclick="download()"></div>
-			<div id="settings"  onclick="document.getElementById('settingsPopup').style.display = 'block';"></div>
+			<div id="go" onclick="exec(0)" title="Run Code"></div>
+			<div id="download" onclick="download()" title="Download your code so you can load it back in later on"></div>
+			<div id="upload" onclick="upload()" title="Open your saved code"></div>
+			<div id="settings"  onclick="document.getElementById('settingsPopup').style.display = 'block';" title="Change the look of the editor"></div>
 		</div>
 		<div id="player">
 			
