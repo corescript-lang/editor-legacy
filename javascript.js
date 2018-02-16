@@ -1,14 +1,10 @@
-/*
- ~ IDEAS ~ 
- > button click = exec(line)
-*/
-var syntax = true;
-var hoverplayer;
+var syntax = true; // Enable and disable syntax highlighting
+var hoverplayer; // Check if the mouse is hovering the player
 var variables = [];
 var labels = [];
 var commands = [];
-var x;
-var y;
+var x; // Mouse x
+var y; // Mouse y
 
 function exec(line1) {
     document.getElementById('player').innerHTML = "";
@@ -182,9 +178,7 @@ function exec(line1) {
                 setVar(minusminus, +getVar(minusminus) - 1);
             }
         } else if (current == "") {
-            // Allow blank returns
-        } else if (current.startsWith("//")) {
-
+            // Allow returns
         } else if (current == "") {
 
         } else if (current.startsWith("button ")) {
@@ -299,20 +293,19 @@ function download() {
 function upload() {
     var upload = document.createElement('INPUT');
     upload.type = "file";
+    upload.accept = ".corescript";
     document.body.appendChild(upload);
-    upload.click();
-    var file = upload.files[0];
-    if (file) {
+    $(upload).change(function() {
         var reader = new FileReader();
-        reader.readAsText(file, "UTF-8");
-        reader.onload = function(evt) {
-            alert(evt.target.result);
+        reader.onload = function () {
+            var text = reader.result;
+            document.getElementById('code').value = text;
+            update();
         }
-        reader.onerror = function(evt) {
-            alert("Error");
-        }
-    }
-    document.body.removeChild(upload);
+        reader.readAsText(upload.files[0])
+    });
+    upload.click();
+    
 }
 
 function update() {
@@ -322,7 +315,8 @@ function update() {
         document.getElementById("code").style.backgroundColor = "transparent";
         var text = document.getElementById('code').value;
         var regex4 = /var ([^\n=]+)([//=]+)([^\n=]+)/g;
-        var regex1 = /\/\/([^]*)/g;
+        var regex1 = /\/\/([^\n]+)/g;
+        var regex14 = /goto ([0-9]+)/g;
         var regex3 = /print ([^\n]+)/g;
         var regex12 = /msg ([^\n]+)/g;
         var regex5 = /([^\n]+)\+\+/g;
@@ -348,6 +342,7 @@ function update() {
         text = text.replace(regex12, "<span style='color:cyan;'>msg </span><span style='color:rgb(230,219,116);'>$1</span>");
         text = text.replace(regex7, "<span style='color:rgb(0,128,155);'>input</span> <span style='color:rgb(230,219,116);'>$1</span><span style='color:crimson;'>$2</span><span style='color:rgb(230,219,116);'>$3</span>");
         text = text.replace(regex13, "<span style='color:lightgreen;'>repeat $1:</span>");
+        text = text.replace(regex14,"<span style='color:lightblue;'>goto </span><span style='color:rgb(230,219,116);'>$1</span>")
         text = text.toString().replace(/\n/g, "<br>");
         document.getElementById("overlay").innerHTML = text;
     } else {
@@ -357,21 +352,19 @@ function update() {
     }
     count();
 }
-// setInterval(function() {
-//     count();
-// },10);
-// window.onbeforeunload = function(e) {
-//     return "Are you sure you want to leave?";
-// };
+
 function count() {
     document.getElementById("counter").innerHTML = "<div style='height:2px;'></div>";
     var lines = document.getElementById("code").value.split("\n");
     for (var o = 0; o < lines.length; o++) {
         document.getElementById("counter").innerHTML += "<p>" + (o + 1) + "</p>";
     }
+}
+
+setInterval(function() {
     document.getElementById('overlay').scrollTop = document.getElementById('code').scrollTop;
     document.getElementById('counter').scrollTop = document.getElementById('code').scrollTop;
-}
+},10);
 
 function l(string) { // Just to make things easier.
     console.log(string);
@@ -400,9 +393,9 @@ function getCoords(e) {
 
 function sl() {
     document.getElementById('loading').style.display = "none";
+    document.getElementById('code').focus();
 }
 
 function popup(title,text) {
     document.getElementsByTagName('body')[0].innerHTML += "<div id='popup'><span><b>"+title+"</b></span><br>"+text+"<br><center><button onclick='this.parentElement.parentElement.outerHTML = "+'""'+"'>Dismiss</button></center></div>";
 }
-
