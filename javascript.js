@@ -295,7 +295,7 @@ function upload() {
     upload.type = "file";
     upload.accept = ".corescript";
     document.body.appendChild(upload);
-    $(upload).change(function() {
+    document.getElementById(upload).change(function() {
         var reader = new FileReader();
         reader.onload = function () {
             var text = reader.result;
@@ -305,7 +305,6 @@ function upload() {
         reader.readAsText(upload.files[0])
     });
     upload.click();
-    
 }
 
 function update() {
