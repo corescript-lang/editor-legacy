@@ -293,9 +293,10 @@ function download() {
 function upload() {
     var upload = document.createElement('INPUT');
     upload.type = "file";
+    upload.id = "uploadthingy"; // Hehe
     upload.accept = ".corescript";
     document.body.appendChild(upload);
-    document.getElementById(upload).change(function() {
+    document.getElementById("uploadthingy").change(function() {
         var reader = new FileReader();
         reader.onload = function () {
             var text = reader.result;
