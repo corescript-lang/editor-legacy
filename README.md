@@ -31,7 +31,7 @@ The code `say Hello, World` will make a alert box saying that.
 
     // This is a test.
 
-**Variable**: Create a variable and set it's value.
+**Variable**: Create a variable and set its value.
 
   
 
