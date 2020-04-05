@@ -163,10 +163,10 @@ function exec(line1) {
 				
                 var set2 = set1.split("=")[0]; // Var Name
                 var set3 = set1.split("=")[1]; // Var Value
-                if (input2 == "" || input3 == "") {
+                if (set2 == "" || set3 == "") {
                     alert("Syntax Error on line " + (i + 1) + ".");
                 } else {
-                    setVar(input2, +getVar(input3) + 1);
+                    setVar(set2, +getVar(set3) + 1);
                 }
             } else {
                 alert("Syntax Error on line " + (i + 1) + ".");
