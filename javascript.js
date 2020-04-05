@@ -52,10 +52,10 @@ function exec(line1) {
             var print1 = current.substring(6);
             if (repeat) {
                 for (var p = 0; p < +times; p++) {
-                    document.getElementById('player').innerHTML += replaceVars(print1) + '<br style="line-height:0px;" />';
+                    document.getElementById('player').innerHTML += replaceVars(print1) + '';
                 }
             } else {
-                document.getElementById('player').innerHTML += replaceVars(print1) + '<br style="line-height:0px;" />';
+                document.getElementById('player').innerHTML += replaceVars(print1) + '';
             }
         } else if (current.startsWith("input ")) {
             if (current.includes("=")) {
