@@ -166,8 +166,7 @@ function exec(line1) {
                 if (input2 == "" || input3 == "") {
                     alert("Syntax Error on line " + (i + 1) + ".");
                 } else {
-                    var input4 = prompt(input3);
-                    setVar(input3, +getVar(input4) + 1);
+                    setVar(input2, +getVar(input3) + 1);
                 }
             } else {
                 alert("Syntax Error on line " + (i + 1) + ".");
