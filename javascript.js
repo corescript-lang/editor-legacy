@@ -166,7 +166,7 @@ function exec(line1) {
                 if (set2 == "" || set3 == "") {
                     alert("Syntax Error on line " + (i + 1) + ".");
                 } else {
-                    setVar(set2, +getVar(set3) + 1);
+                    setVar(set2, set3);
                 }
             } else {
                 alert("Syntax Error on line " + (i + 1) + ".");
