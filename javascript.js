@@ -155,7 +155,23 @@ function exec(line1) {
                 alert("Syntax Error on line " + (i + 1) + ".");
             }
         } else if (current.startsWith("set ")) {
-
+            if (current.includes("=")) {
+                var set1 = current.substring(4);
+                set1 = set1.replace(" = ", "=");
+                set1 = set1.replace(" =", "=");
+                set1 = set1.replace("= ", "=");
+				
+                var set2 = set1.split("=")[0]; // Var Name
+                var set3 = set1.split("=")[1]; // Var Value
+                if (input2 == "" || input3 == "") {
+                    alert("Syntax Error on line " + (i + 1) + ".");
+                } else {
+                    var input4 = prompt(input3);
+                    setVar(input3, +getVar(input4) + 1);
+                }
+            } else {
+                alert("Syntax Error on line " + (i + 1) + ".");
+            }
         } else if (current.startsWith("include ")) {
             var url = current.substring(8);
             document.head.append('<script src="' + url + '"></script>');
