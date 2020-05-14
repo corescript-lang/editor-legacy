@@ -104,6 +104,7 @@ function exec(line1) {
                 if1 = if1.replace("= ", "=");
                 var name1 = if1.split("=")[0];
                 var value1 = if1.split("=")[1];
+		value1 = replaceVars(value1);
                 if (name1 == "" || name1 == "" || current.includes(":")) {
                     var code1 = value1.split(":")[1];
                     value1 = value1.split(":")[0];
@@ -263,9 +264,9 @@ function getVar(name) {
 function replaceVars(string) {
     var result = string;
     for (var q = 0; q < 10; q++) {
-        var add = result.match(/\(add ([a-zA-Z0-9._-]+),([a-zA-Z0-9._-]+)\)/g);
-        var random = result.match(/\(random ([a-zA-Z0-9._-]+),([a-zA-Z0-9._-]+)\)/g);
-        var subtract = result.match(/\(subtract ([a-zA-Z0-9._-]+),([a-zA-Z0-9._-]+)\)/g);
+        var add = result.match(/\(add ([a-zA-Z0-9._-]+) ([a-zA-Z0-9._-]+)\)/g);
+        var random = result.match(/\(random ([a-zA-Z0-9._-]+) ([a-zA-Z0-9._-]+)\)/g);
+        var subtract = result.match(/\(subtract ([a-zA-Z0-9._-]+) ([a-zA-Z0-9._-]+)\)/g);
         if (add == null && random == null && subtract == null) {
             for (var w = 0; w < variables.length; w++) {
                 var name = variables[w].split("=")[0];
